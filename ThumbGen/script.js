@@ -1,4 +1,4 @@
-﻿const bgInput = document.querySelector("#bgInput");
+const bgInput = document.querySelector("#bgInput");
 const pngInput = document.querySelector("#pngInput");
 const fontColor = document.querySelector("#fontColor");
 const outlineColor = document.querySelector("#outlineColor");
@@ -8,6 +8,7 @@ const blurCheck = document.querySelector("#blurCheck");
 const blurValue = document.querySelector("#blurValue");
 const rangeInputs = document.querySelectorAll('input[type="range"]');
 
+let dark=true;
 let xCoord = document.getElementById("xCoord");
 let yCoord = document.getElementById("yCoord");
 let fontDim = document.getElementById("fontDim");
@@ -25,6 +26,38 @@ fontDim.value = 110;
 xCoord.value = 640;
 yCoord.value = 130;
 
+
+//---------------------------------------------------------------------
+function darkMode() {
+    //document.getElementsByTagName("body")[0].style = "background-color: #292929; color:#bb86fc;";
+    //document.body.classList.toggle("darkMode");
+    //document.button.classList.toggle("darkMode");
+    var root = document.querySelector(":root");
+        
+    document.querySelectorAll('*').forEach((node) => node.classList.toggle("darkMode"));
+    document.querySelectorAll('input').forEach((node) => node.classList.toggle("darkInput"));
+    document.querySelectorAll('button').forEach((node) => node.classList.toggle("darkInput"));
+    document.querySelectorAll('select').forEach((node) => node.classList.toggle("darkInput"));
+    document.querySelectorAll('canvas').forEach((node) => node.classList.toggle("darkCanvas"));
+    
+    if (dark === true) {
+        root.style.setProperty('--rangeBackgroundImage', '#eea730');
+        root.style.setProperty('--rangeBackground', 'transparent');
+        dark = false;
+    }
+    else {
+        root.style.setProperty('--rangeBackgroundImage', '#3e64ff');
+        root.style.setProperty('--rangeBackground', 'white');
+        dark = true;
+    }
+}
+
+window.onload = function () {
+    if (confirm("Want to Activate Dark Mode?")) { darkMode() }
+    else { alert("I'm sorry for ur eyes") }
+}
+
+
 //---------------------------------------------------------------------
 document.getElementById("blackGradient").onclick = function () {
     var grd = canvasCtx.createLinearGradient(640, 0, 640, 300);
@@ -36,27 +69,27 @@ document.getElementById("blackGradient").onclick = function () {
     canvasCtx.fillRect(0, 0, 1280, 720);
 }
 //Font Selector
-const fonts = [new FontFace("aBigDeal", "url(fonts/aBigDeal.ttf)"),
+const fonts = [new FontFace("BigDeal", "url(fonts/aBigDeal.ttf)"),
     new FontFace("AkhirTahun", "url(fonts/aAkhirTahun.ttf)"),
-    new FontFace("aBlackLives", "url(fonts/aBlackLives.ttf)"),
-    new FontFace("CARIBOLD", "url(fonts/CARIBOLD.ttf)"),
-    new FontFace("CARIBOLDROUGH", "url(fonts/CARIBOLDROUGH.ttf)"),
-    new FontFace("ConfigRoundedExtrabold", "url(fonts/ConfigRoundedExtrabold.otf)"),
-    new FontFace("ChunkFive-Regular", "url(fonts/ChunkFive-Regular.otf)"),
-    //new FontFace("CrystalUniverse-Regular", "url(fonts/CrystalUniverse-Regular.ttf)"),
-    new FontFace("debussy", "url(fonts/debussy.ttf)"),
-    new FontFace("DeepShadowOver", "url(fonts/DeepShadowOver.ttf)"),
-    new FontFace("DeepShadow", "url(fonts/DeepShadow.ttf)"),
-    //new FontFace("DeepShadowUnder", "url(fonts/DeepShadowUnder.ttf)"),
-    new FontFace("GaboDriveCondensedBold", "url(fonts/GaboDriveCondensedBold.ttf)"),
+    new FontFace("BlackLives", "url(fonts/aBlackLives.ttf)"),
+    new FontFace("Caribold", "url(fonts/CARIBOLD.ttf)"),
+    new FontFace("CariboldRough", "url(fonts/CARIBOLDROUGH.ttf)"),
+    new FontFace("ConfigRounded", "url(fonts/ConfigRoundedExtrabold.otf)"),
+    new FontFace("Confetti", "url(fonts/PartyConfetti.ttf)"),
+    new FontFace("DenseLetters", "url(fonts/DenseLetters.ttf)"),
+    new FontFace("ChunkFive", "url(fonts/ChunkFive.otf)"),
+    new FontFace("Digitalt", "url(fonts/Digitalt.ttf)"),
+    new FontFace("Debussy", "url(fonts/debussy.ttf)"),
+    new FontFace("Freshman", "url(fonts/Freshman.ttf)"),
+    new FontFace("GaboDriveBold", "url(fonts/GaboDriveCondensedBold.ttf)"),
     new FontFace("Insanibc", "url(fonts/Insanibc.ttf)"),
     new FontFace("Insanibu", "url(fonts/Insanibu.ttf)"),
-    new FontFace("LilitaOne-Regular", "url(fonts/LilitaOne-Regular.ttf)"),
+    new FontFace("LilitaOne", "url(fonts/LilitaOne-Regular.ttf)"),
     new FontFace("Matiz", "url(fonts/Matiz.ttf)"),
-    //new FontFace("minstrelposterwhg.posternf", "url(fonts/minstrelposterwhg.posternf.ttf)"),
-    new FontFace("moon_get-Heavy", "url(fonts/moon_get-Heavy.ttf)"),
-    new FontFace("Sniglet-ExtraBold", "url(fonts/Sniglet-ExtraBold.ttf)"),
-    new FontFace("theboldfont", "url(fonts/theboldfont.ttf)")];
+    new FontFace("AppleTea", "url(fonts/AppleTea.ttf)"),
+    new FontFace("MoonHeavy", "url(fonts/MoonHeavy.ttf)"),
+    new FontFace("Sniglet", "url(fonts/Sniglet-ExtraBold.ttf)"),
+    new FontFace("TheBoldFont", "url(fonts/theboldfont.ttf)")];
 
 for (let i = 0; i < fonts.length; i++) {
     fonts[i].load().then((font) => {
@@ -89,18 +122,18 @@ function renderText() {
 
     //Get Font name
     var fontSelect = document.getElementById("fontDropDownInput");
-    var fontText = fontSelect.options[fontSelect.selectedIndex].text
+    var fontText = fontSelect.options[fontSelect.selectedIndex].text;
 
     //set Outline color
     console.log("Outline Color: "+outlineColor.value);
-    canvasCtx.strokeStyle = outlineColor.value
+    canvasCtx.strokeStyle = outlineColor.value;
 
     //sets outline thickness value
     canvasCtx.lineWidth = outlineSize.value;
     console.log("Outline Size:" + outlineSize.value);
 
     canvasCtx.font = fontDim.value + "px "+fontText;
-    console.log("Font Style: " + canvasCtx.font)
+    console.log("Font Style: " + canvasCtx.font);
 
     //align at center
     canvasCtx.textAlign = "center";
@@ -187,25 +220,16 @@ pngInput.addEventListener("change", () => {
     pngImage.src = URL.createObjectURL(pngInput.files[0]);
 });
 
-
-
 function renderPng() {
     //generates the random x coordinate
     let xCoord = Math.floor(Math.random() * (1280 - pngImage.width));
-
-    //outline and dropshadow
-    //should do a check between white and black cuz i cant do both
-    canvasPngCtx.shadowColor = "white";
-    canvasPngCtx.shadowOffsetX = 0;
-    canvasPngCtx.shadowOffsetY = 0;
-    canvasPngCtx.shadowBlur = 20;
 
     canvasPngCtx.shadowColor = "black";
     canvasPngCtx.shadowOffsetX = 0;
     canvasPngCtx.shadowOffsetY = 0;
     canvasPngCtx.shadowBlur = 20;
 
-    canvasPngCtx.drawImage(pngImage, xCoord, (720 - pngImage.height));
+    canvasPngCtx.drawImage(pngImage, xCoord, (720 - pngImage.height), pngImage.width,480);
     console.log("debug: png rendered at x:" + xCoord);
 
     canvasCtx.drawImage(canvasPng, 0, 0);
