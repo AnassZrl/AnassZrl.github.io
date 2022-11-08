@@ -255,7 +255,7 @@ function outlineCheck(){
 //----------------------------------------------------------------------------------------------------------
 //Images
 let pngArray = [];
-for (let i = 1; i < 8 + 1; i++) {
+for (let i = 0; i < 29 ; i++) {
     pngArray[i] = new Image();
     pngArray[i].src = "png/" + i + ".png";
 }
