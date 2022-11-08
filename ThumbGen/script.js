@@ -4,10 +4,16 @@ const fontColor = document.querySelector("#fontColor");
 const shadowColor = document.querySelector("#shadowColor");
 const outlineColor = document.querySelector("#outlineColor");
 const outlineSize = document.querySelector("#outlineSize");
-//const rotationAngle = document.querySelector("#rotationAngle");
 const blurCheck = document.querySelector("#blurCheck");
 const blurValue = document.querySelector("#blurValue");
 const rangeInputs = document.querySelectorAll('input[type="range"]');
+//const rotationAngle = document.querySelector("#rotationAngle");
+
+const canvas = document.querySelector("#canvas");
+const canvasCtx = canvas.getContext("2d");
+
+const canvasPng = document.querySelector("#canvasPng");
+const canvasPngCtx = canvasPng.getContext("2d");
 
 let dark=true;
 let xCoord = document.getElementById("xCoord");
@@ -17,12 +23,6 @@ let fontDim = document.getElementById("fontDim");
 let pngXcoord = document.getElementById("pngXcoord");
 let pngYcoord = document.getElementById("pngYcoord");
 
-const canvas = document.querySelector("#canvas");
-const canvasCtx = canvas.getContext("2d");
-
-const canvasPng = document.querySelector("#canvasPng");
-const canvasPngCtx = canvasPng.getContext("2d");
-
 let bgImage = null;
 let pngImage = null;
 let txtValue = null; 
@@ -30,8 +30,7 @@ fontDim.value = 110;
 xCoord.value = 640;
 yCoord.value = 130;
 
-
-//---------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------
 function darkMode() {
     var root = document.querySelector(":root");
         
@@ -63,11 +62,7 @@ window.onload = function () {
     }
 }
 
-
-
-
-
-//---------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------
 document.getElementById("blackGradient").onclick = function () {
     var grd = canvasCtx.createLinearGradient(640, 0, 640, 300);
     grd.addColorStop(0, "black");
@@ -88,7 +83,6 @@ const fonts = [new FontFace("BigDeal", "url(fonts/aBigDeal.ttf)"),
     new FontFace("DenseLetters", "url(fonts/DenseLetters.ttf)"),
     new FontFace("ChunkFive", "url(fonts/ChunkFive.otf)"),
     new FontFace("Digitalt", "url(fonts/Digitalt.ttf)"),
-    new FontFace("Debussy", "url(fonts/debussy.ttf)"),
     new FontFace("Freshman", "url(fonts/Freshman.ttf)"),
     new FontFace("GaboDriveBold", "url(fonts/GaboDriveCondensedBold.ttf)"),
     new FontFace("Insanibc", "url(fonts/Insanibc.ttf)"),
@@ -100,22 +94,21 @@ const fonts = [new FontFace("BigDeal", "url(fonts/aBigDeal.ttf)"),
     new FontFace("Sniglet", "url(fonts/Sniglet-ExtraBold.ttf)"),
     new FontFace("TheBoldFont", "url(fonts/theboldfont.ttf)")];
 
-for (let i = 0; i < fonts.length; i++) {
-    fonts[i].load().then((font) => {
-        // with canvas, if this is ommited won't work
-        document.fonts.add(font);
-
-        //add option on the select font dropdown menu
-        const fontFace = document.createElement("option");
-        fontFace.innerHTML = fonts[i].family;
-        //console.log(fonts[i].family.text);
-        const dropDown = document.getElementById("fontDropDownInput");
-        dropDown.appendChild(fontFace);
-        dropDown.options[i].style.font = "12px " +dropDown.options[i].text;
-        //console.log(dropDown.options[i]);
-    })
-} //console.log(font[0].font);
-
+    for (let i = 0; i < fonts.length; i++) {
+        fonts[i].load().then((font) => {
+            // with canvas, if this is ommited won't work
+            document.fonts.add(font);
+    
+            //add option on the select font dropdown menu
+            const fontFace = document.createElement("option");
+            fontFace.innerHTML = fonts[i].family;
+            //console.log(fonts[i].family.text);
+            const dropDown = document.getElementById("fontDropDownInput");
+            dropDown.appendChild(fontFace);
+            dropDown.options[i].style.font = "12px " +dropDown.options[i].text;
+            //console.log(dropDown.options[i]);
+        })
+    } //console.log(font[0].font);
 
 //----------------------------------------------------------------------------------------------------------
 //Printing Text
@@ -188,8 +181,6 @@ function getMousePos(canvas, e) {
 //----------------------------------------------------------------------------------------------------------
 //pngInput is associated with the element that has that ID
 //this methods detects when something changes and executes this
-
-
 bgInput.addEventListener("change", () => {
     bgImage = new Image();//create new image;
 
@@ -255,7 +246,7 @@ function outlineCheck(){
 //----------------------------------------------------------------------------------------------------------
 //Images
 let pngArray = [];
-for (let i = 0; i < 29 ; i++) {
+for (let i = 1; i < 29 + 1; i++) {
     pngArray[i] = new Image();
     pngArray[i].src = "png/" + i + ".png";
 }
@@ -274,7 +265,7 @@ document.getElementById("randPng").onclick = function () {
     canvasCtx.drawImage(canvasPng, 0, 0);
     console.log("debug: png rendered at x:" + xCoord.value);
 }
-//----------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------
 //Range methods(just ignore)
 function handleInputChange(e) {
     let target = e.target
