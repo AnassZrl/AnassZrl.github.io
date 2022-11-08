@@ -1,6 +1,7 @@
 const bgInput = document.querySelector("#bgInput");
 const pngInput = document.querySelector("#pngInput");
 const fontColor = document.querySelector("#fontColor");
+const shadowColor = document.querySelector("#shadowColor");
 const outlineColor = document.querySelector("#outlineColor");
 const outlineSize = document.querySelector("#outlineSize");
 //const rotationAngle = document.querySelector("#rotationAngle");
@@ -12,6 +13,9 @@ let dark=true;
 let xCoord = document.getElementById("xCoord");
 let yCoord = document.getElementById("yCoord");
 let fontDim = document.getElementById("fontDim");
+
+let pngXcoord = document.getElementById("pngXcoord");
+let pngYcoord = document.getElementById("pngYcoord");
 
 const canvas = document.querySelector("#canvas");
 const canvasCtx = canvas.getContext("2d");
@@ -29,9 +33,6 @@ yCoord.value = 130;
 
 //---------------------------------------------------------------------
 function darkMode() {
-    //document.getElementsByTagName("body")[0].style = "background-color: #292929; color:#bb86fc;";
-    //document.body.classList.toggle("darkMode");
-    //document.button.classList.toggle("darkMode");
     var root = document.querySelector(":root");
         
     document.querySelectorAll('*').forEach((node) => node.classList.toggle("darkMode"));
@@ -52,10 +53,18 @@ function darkMode() {
     }
 }
 
+//when pafe is loaded ask this
 window.onload = function () {
-    if (confirm("Want to Activate Dark Mode?")) { darkMode() }
-    else { alert("I'm sorry for ur eyes") }
+    darkMode();
+
+    if(confirm("Do you want light mode?")) {
+        alert("I'm sorry for ur eyes");
+        darkMode();
+    }
 }
+
+
+
 
 
 //---------------------------------------------------------------------
@@ -125,15 +134,15 @@ function renderText() {
     var fontText = fontSelect.options[fontSelect.selectedIndex].text;
 
     //set Outline color
-    console.log("Outline Color: "+outlineColor.value);
+    //console.log("Outline Color: "+outlineColor.value);
     canvasCtx.strokeStyle = outlineColor.value;
 
     //sets outline thickness value
     canvasCtx.lineWidth = outlineSize.value;
-    console.log("Outline Size:" + outlineSize.value);
+    //console.log("Outline Size:" + outlineSize.value);
 
     canvasCtx.font = fontDim.value + "px "+fontText;
-    console.log("Font Style: " + canvasCtx.font);
+    //console.log("Font Style: " + canvasCtx.font);
 
     //align at center
     canvasCtx.textAlign = "center";
@@ -142,14 +151,14 @@ function renderText() {
     canvasCtx.strokeText(document.querySelector("#txtInput").value, xCoord.value, yCoord.value);
 
     //set Font Color
-    console.log("Font Color: " + fontColor.value);
+   //console.log("Font Color: " + fontColor.value);
     canvasCtx.fillStyle = fontColor.value;
 
     //draws text
     canvasCtx.fillText(document.querySelector("#txtInput").value, xCoord.value, yCoord.value);
 
     //still for rotation suff
-    console.log("Title " + document.getElementById("textBtn").value + " Coord : X: " + xCoord.value + ", Y: " + yCoord.value);
+    //console.log("Title " + document.getElementById("textBtn").value + " Coord : X: " + xCoord.value + ", Y: " + yCoord.value);
 }
 
 //----------------------------------------------------------------------------------------------------------
@@ -159,9 +168,12 @@ function renderText() {
 canvas.addEventListener("click", function (evt) {
     var mousePos = getMousePos(canvas, evt);
     xCoord.value = Math.round(mousePos.x);
-    yCoord.value = mousePos.y;
+    yCoord.value = Math.round(mousePos.y);
+
+    pngXcoord.value = Math.round(mousePos.x);
+    pngYcoord.value = Math.round(mousePos.y);
     
-    console.log("Selected Coordinates at X: " + Math.round(mousePos.x) + ", Y: " + mousePos.y)
+    //console.log("Selected Coordinates at X: " + Math.round(mousePos.x) + ", Y: " + mousePos.y)
 }, false);
 
 //Get Mouse Position
@@ -195,7 +207,7 @@ function renderBackground() {
 
     if (blurCheck.checked == true) {
         console.log("Blur is Checked");
-        canvasCtx.filter = "blur(" + blurValue.value + "px)";
+        canvasCtx.filter = "blur(" + (blurValue.value/10) + "px)";
     }
 
     //Draws image while rescaling it to 1280x720
@@ -223,12 +235,9 @@ pngInput.addEventListener("change", () => {
 function renderPng() {
     //generates the random x coordinate
     let xCoord = Math.floor(Math.random() * (1280 - pngImage.width));
-
-    canvasPngCtx.shadowColor = "black";
-    canvasPngCtx.shadowOffsetX = 0;
-    canvasPngCtx.shadowOffsetY = 0;
-    canvasPngCtx.shadowBlur = 20;
-
+    
+    outlineCheck()
+    
     canvasPngCtx.drawImage(pngImage, xCoord, (720 - pngImage.height), pngImage.width,480);
     console.log("debug: png rendered at x:" + xCoord);
 
@@ -236,6 +245,13 @@ function renderPng() {
     console.debug("png copied")
 };
 
+//Set outline color and settings
+function outlineCheck(){
+        canvasPngCtx.shadowColor = shadowColor.value;
+        canvasPngCtx.shadowOffsetX = 0;
+        canvasPngCtx.shadowOffsetY = 0;
+        canvasPngCtx.shadowBlur = 30;
+}
 //----------------------------------------------------------------------------------------------------------
 //Images
 let pngArray = [];
@@ -252,11 +268,7 @@ document.getElementById("randPng").onclick = function () {
 
     xCoord = Math.floor(Math.random() * (1280 - pngArray[x].width));
 
-    
-    canvasPngCtx.shadowColor = "black";
-    canvasPngCtx.shadowOffsetX = 0;
-    canvasPngCtx.shadowOffsetY = 0;
-    canvasPngCtx.shadowBlur = 20;
+    outlineCheck();
 
     canvasPngCtx.drawImage(pngArray[x], xCoord, (720 - pngArray[x].height));
     canvasCtx.drawImage(canvasPng, 0, 0);
